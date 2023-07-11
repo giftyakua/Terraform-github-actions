@@ -6,7 +6,9 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  id-token: write # This is required for aws oidc connection
+  contents: read # This is required for actions/checkout
+  pull-requests: write # This is required for gh bot to comment PR
 
 jobs:
   terraform:
@@ -33,6 +35,20 @@ jobs:
       uses: hashicorp/setup-terraform@v1
   #   with:
     #    terraform_version: 1.2.5
+    
+    - name: Grant write access
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const permission = ['actions:write'];
+          const repo = context.repo;
+          await github.repos.createOrUpdateRepositoryPermissions({
+            ...repo
+            permissions,
+            permission: 'write',
+          })
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc
     - name: Terraform Init
