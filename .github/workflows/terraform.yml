@@ -35,8 +35,9 @@ jobs:
           terraform_version: 1.2.5
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: change directory
+      run: cd /
     - name: Terraform Init
-      working-directory: /
       run: terraform init
 
     # Checks that all Terraform configuration files adhere to a canonical format
