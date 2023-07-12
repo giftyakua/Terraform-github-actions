@@ -21,5 +21,5 @@ provider "aws" {
 resource "aws_instance" "test_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
-  key_name      = "mykey"
+  key_name      = "c1"
 }
